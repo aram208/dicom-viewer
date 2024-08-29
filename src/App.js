@@ -1,24 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+
+import { ThemeProvider } from '@mui/material';
+
+import AppContainer from './components/layout/app-container_drawer';
+import { ThemeContext } from './hooks/ThemeContext';
+import { darkTheme, lightTheme } from './theme';
 
 function App() {
+
+
+  const [isDarkTheme, setIsDarkTheme] = useState(true);
+
+  const toggleTheme = () => {
+    setIsDarkTheme(!isDarkTheme);
+  };
+
+  const theme = isDarkTheme ? darkTheme : lightTheme;
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={theme}>
+      <ThemeContext.Provider value={{ theme, toggleTheme }}>
+        <Router>
+          <AppContainer />
+        </Router>
+      </ThemeContext.Provider>
+    </ThemeProvider>
   );
 }
 
